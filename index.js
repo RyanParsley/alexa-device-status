@@ -10,11 +10,31 @@ app.launch(function(req, res) {
   res.say(prompt).reprompt(prompt).shouldEndSession(false);
 });
 
-app.intent('deviceinfo', {
+app.intent('listDevices', {
+  'utterances': ['What devices do I have']
+},
+  function(req, res) {
+    var deviceHelper = new deviceDataHelper();
+    var reprompt = 'Tell me an device nickname to get information about it.';
+    deviceHelper.getDevices().then(function(devices) {
+      console.log(devices);
+      res.say("Listing all devices now").send();
+    }).catch(function(err) {
+      console.log(err.statusCode);
+      var prompt = 'I am not able to list your devices at this time. ';
+        //https://github.com/matt-kruse/alexa-app/blob/master/index.js#L171
+      res.say(prompt).reprompt(reprompt).shouldEndSession(false).send();
+    });
+    return false;
+  }
+);
+
+app.intent('deviceInfo', {
   'slots': {
-    'DEVICE': 'DEVICE'
+    'STATUS': 'STATUS',
+    'DEVICE': 'STATUS'
   },
-  'utterances': ['{|type} {|status} {|info} {|for} {-|DEVICE}']
+  'utterances': ['{|type} {|status} {-|DEVICE}']
 },
   function(req, res) {
     //get the slot

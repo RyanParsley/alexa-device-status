@@ -25,6 +25,16 @@ deviceDataHelper.prototype.getDeviceStatus = function(device) {
   return rp(options);
 };
 
+deviceDataHelper.prototype.getDevices = function() {
+  var options = {
+    method: 'GET',
+    uri: ENDPOINT,
+    resolveWithFullResponse: true,
+    json: true
+  };
+  return rp(options);
+};
+
 deviceDataHelper.prototype.formatDeviceStatus = function(device) {
   return _.template('${name} is ${status}')({
     name: device.name,
