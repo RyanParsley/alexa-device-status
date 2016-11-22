@@ -17,8 +17,13 @@ app.intent('listDevices', {
     var deviceHelper = new deviceDataHelper();
     var reprompt = 'Tell me an device nickname to get information about it.';
     deviceHelper.getDevices().then(function(devices) {
-      console.log(devices);
-      res.say("Listing all devices now").send();
+      console.log("get returned: ", devices.body);
+      var names = devices.body.map(function(item) {
+        console.log("item is now: ", item.name);
+        return item.name;
+      }).join(', ');
+      console.log("Names is: ", names);
+      res.say(names).send();
     }).catch(function(err) {
       console.log(err.statusCode);
       var prompt = 'I am not able to list your devices at this time. ';
