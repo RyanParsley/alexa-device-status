@@ -17,12 +17,9 @@ app.intent('listDevices', {
     var deviceHelper = new deviceDataHelper();
     var reprompt = 'Tell me an device nickname to get information about it.';
     deviceHelper.getDevices().then(function(devices) {
-      console.log("get returned: ", devices.body);
       var names = devices.body.map(function(item) {
-        console.log("item is now: ", item.name);
         return item.name;
       }).join(', ');
-      console.log("Names is: ", names);
       res.say(names).send();
     }).catch(function(err) {
       console.log(err.statusCode);
@@ -37,7 +34,7 @@ app.intent('listDevices', {
 app.intent('deviceInfo', {
   'slots': {
     'STATUS': 'STATUS',
-    'DEVICE': 'STATUS'
+    'DEVICE': 'AMAZON.LITERAL'
   },
   'utterances': ['{|type} {|status} {-|DEVICE}']
 },
@@ -45,6 +42,7 @@ app.intent('deviceInfo', {
     //get the slot
     var device = req.slot('DEVICE');
     var reprompt = 'Tell me an device nickname to get information about it.';
+
     if (_.isEmpty(device)) {
       var prompt = 'I didn\'t hear a device that I know. Tell me a device name.';
       res.say(prompt).reprompt(reprompt).shouldEndSession(false);
@@ -52,7 +50,6 @@ app.intent('deviceInfo', {
     } else {
       var deviceHelper = new deviceDataHelper();
       deviceHelper.requestDeviceStatus(device).then(function(device) {
-        console.log(device);
         res.say(deviceHelper.formatDeviceStatus(device)).send();
       }).catch(function(err) {
         console.log(err.statusCode);
