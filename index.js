@@ -34,9 +34,9 @@ app.intent('listDevices', {
 app.intent('deviceInfo', {
   'slots': {
     'STATUS': 'STATUS',
-    'DEVICE': 'AMAZON.LITERAL'
+    'DEVICE': 'DEVICE_LIST'
   },
-  'utterances': ['{|type} {|status} {-|DEVICE}']
+  'utterances': ['about {|type} {|status} {-|DEVICE}']
 },
   function(req, res) {
     //get the slot
