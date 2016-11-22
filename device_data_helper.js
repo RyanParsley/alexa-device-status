@@ -1,7 +1,7 @@
 'use strict';
 var _ = require('lodash');
 var rp = require('request-promise');
-var ENDPOINT = '';
+var ENDPOINT = 'https://mysterious-mountain-45455.herokuapp.com/devices';
 
 function deviceDataHelper() {
 }
@@ -26,11 +26,10 @@ deviceDataHelper.prototype.getDeviceStatus = function(device) {
 };
 
 deviceDataHelper.prototype.formatDeviceStatus = function(device) {
-    return _.template('${name} is ${status}')({
-      name: device.name,
-      status: device.status
-    });
-  }
+  return _.template('${name} is ${status}')({
+    name: device.name,
+    status: device.status
+  });
 };
 
 module.exports = deviceDataHelper;
